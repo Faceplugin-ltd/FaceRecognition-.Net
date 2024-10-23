@@ -8,18 +8,19 @@
             Padding="30,0"
             Spacing="25">
             <Image
-                Source="dotnet_bot.png"
+                x:Name="ImageCaption"
+                Source="test.jpg"
                 HeightRequest="185"
                 Aspect="AspectFit"
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
             <Label
-                Text="Hello, World!"
+                Text="Faceplugin Ltd"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
+                Text="Welcome to the .NET Face Recognition Application"
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
@@ -30,6 +31,24 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
+
+            <HorizontalStackLayout>
+                
+                <Button
+                    x:Name="GetMachineCodeBtn"
+                    Text="Get HWID" 
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="OnGetMachineCode"
+                    HorizontalOptions="Fill" />
+
+                <Entry
+                    x:Name="MachineCodeLabel"
+                    Text=""
+                    MaxLength="20"
+                    Style="{StaticResource SubHeadline}"/>
+
+            </HorizontalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 
