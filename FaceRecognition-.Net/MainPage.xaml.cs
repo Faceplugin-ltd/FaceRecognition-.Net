@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace FaceRecognition_.Net
 {
@@ -22,17 +23,40 @@ namespace FaceRecognition_.Net
 
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void OnRecognizeFaceBtn(object sender, EventArgs e)
         {
-            count++;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+            var customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.iOS, new[] { "public.my.comic.extension" } }, // UTType values
+                    { DevicePlatform.Android, new[] { "application/comics" } }, // MIME type
+                    { DevicePlatform.WinUI, new[] { ".jpg", ".png" } }, // file extension
+                    { DevicePlatform.Tizen, new[] { "*/*" } },
+                    { DevicePlatform.macOS, new[] { "jpg", "png" } }, // UTType values
+                });
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            PickOptions options = new()
+            {
+                PickerTitle = "Please select a image file",
+                FileTypes = customFileType,
+            };
 
+            try
+            {
+                await PickAndShow(options);
+            }
+            catch (OperationCanceledException)
+            {
+                throw new OperationCanceledException("It was cancelled");
+            }
+
+        }
+
+        private void OnActivate(object sender, EventArgs e)
+        {
+            int ret = faceSDK.Activate(LicenseLabel.Text);
+            DisplayAlert("check", ret.ToString(), "ok");
         }
 
         private void OnGetMachineCode(object sender, EventArgs e)
@@ -40,38 +64,6 @@ namespace FaceRecognition_.Net
 
             MachineCodeLabel.Text = faceSDK.GetHardwareId();
             SemanticScreenReader.Announce(MachineCodeLabel.Text);
-
-            //ImageCaption.Source = ImageSource.FromFile("dotnet_bot.png");
-
-            // Read local image, convert it to byte array, and get image size
-            string imagePath = "E:/1.jpg";
-
-            System.Drawing.Image image = null;
-            try
-            {
-                image = LoadImageWithExif(imagePath);
-            }
-            catch (Exception)
-            {
-                DisplayAlert("test", "Unknown Format!", "ok");
-                return;
-            }
-
-            //byte[] imgbuf = ImageToByteArray(image);
-
-            Bitmap imgBmp = ConvertTo24bpp(image);
-            BitmapData bitmapData = imgBmp.LockBits(new Rectangle(0, 0, imgBmp.Width, imgBmp.Height), ImageLockMode.ReadWrite, imgBmp.PixelFormat);
-
-            int bytesPerPixel = Bitmap.GetPixelFormatSize(imgBmp.PixelFormat) / 8;
-            int byteCount = bitmapData.Stride * imgBmp.Height;
-            byte[] pixels = new byte[byteCount];
-            IntPtr ptrFirstPixel = bitmapData.Scan0;
-            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
-
-            imgBmp.UnlockBits(bitmapData);
-
-            ResultBox[] resultBoxes = new ResultBox[10];
-            int faceCount = faceSDK.DetectFace(pixels, imgBmp.Width, imgBmp.Height, bitmapData.Stride, resultBoxes, 10);
 
         }
 
@@ -145,7 +137,72 @@ namespace FaceRecognition_.Net
             }
         }
 
+        public async Task<FileResult> PickAndShow(PickOptions options)
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(options);
+                if (result != null)
+                {
+                    if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                        result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        FaceImage.Source = ImageSource.FromFile(result.FullPath);
 
+                        // Read local image, convert it to byte array, and get image size
+                        string imagePath = result.FullPath;
+
+                        System.Drawing.Image image = null;
+                        try
+                        {
+                            image = LoadImageWithExif(imagePath);
+                        }
+                        catch (Exception)
+                        {
+                            DisplayAlert("test", "Unknown Format!", "ok");
+                            return null;
+                        }
+
+                        Bitmap imgBmp = ConvertTo24bpp(image);
+                        BitmapData bitmapData = imgBmp.LockBits(new Rectangle(0, 0, imgBmp.Width, imgBmp.Height), ImageLockMode.ReadWrite, imgBmp.PixelFormat);
+
+                        int bytesPerPixel = Bitmap.GetPixelFormatSize(imgBmp.PixelFormat) / 8;
+                        int byteCount = bitmapData.Stride * imgBmp.Height;
+                        byte[] pixels = new byte[byteCount];
+                        IntPtr ptrFirstPixel = bitmapData.Scan0;
+                        Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+
+                        imgBmp.UnlockBits(bitmapData);
+
+                        ResultBox[] resultBoxes = new ResultBox[10];
+                        int faceCount = faceSDK.DetectFace(pixels, imgBmp.Width, imgBmp.Height, bitmapData.Stride, resultBoxes, 10);
+
+                        string resultString = "{\n";
+
+                        for (int i = 0; i < faceCount; i++)
+                        {
+                            resultString += "x1: " + resultBoxes[i].x1.ToString() + ",\n";
+                            resultString += "y1: " + resultBoxes[i].y1.ToString() + ",\n";
+                            resultString += "x2: " + resultBoxes[i].x2.ToString() + ",\n";
+                            resultString += "y2: " + resultBoxes[i].y2.ToString() + ",\n";
+                            resultString += "livenessConfidence: " + resultBoxes[i].liveness.ToString() + ",\n";
+                        }
+
+                        resultString += "}\n";
+
+                        ResultEditor.Text = resultString;
+
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // The user canceled or something went wrong
+            }
+
+            return null;
+        }
     }
-
 }

@@ -49,13 +49,13 @@
                     x:Name="ActivateBtn"
                     Text="Activate" 
                     SemanticProperties.Hint="Counts the number of times you click"
-                    Clicked="OnGetMachineCode"
+                    Clicked="OnActivate"
                     HorizontalOptions="Fill" />
 
                 <Entry
                     x:Name="LicenseLabel"
                     Text=""
-                    MaxLength="100"
+                    MaxLength="250"
                     Placeholder="Enter your license text"
                     Style="{StaticResource SubHeadline}"
                     Margin="20,0,0,0"/>
@@ -66,9 +66,9 @@
                 <Button
                     x:Name="CounterBtn"
                     Text="Open Image" 
-                    SemanticProperties.Hint="Counts the number of times you click"
-                    Clicked="OnCounterClicked"
-                    VerticalOptions="Start" 
+                    SemanticProperties.Hint="Recognize face from image"
+                    Clicked="OnRecognizeFaceBtn"
+                    VerticalOptions="Start"
                     Margin="0,0,20,0"/>
 
                 <Image
@@ -76,12 +76,13 @@
                     Source="avatar.png"
                     HeightRequest="250"
                     Aspect="AspectFit"
-                    SemanticProperties.Description="dot net bot in a race car number eight" />
+                    SemanticProperties.Description="default avatar image" />
 
                 <Editor 
-                    x:Name="editor"
+                    x:Name="ResultEditor"
                     Placeholder="Result text"
-                    HeightRequest="250" 
+                    HeightRequest="250"
+                    WidthRequest="500"
                     Margin="20,0,0,0"/>
 
             </HorizontalStackLayout>

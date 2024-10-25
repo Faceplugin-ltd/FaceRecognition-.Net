@@ -12,6 +12,7 @@ namespace FaceSDK
     {
         public int x1, y1, x2, y2;
 
+        public float liveness;
         public float yaw, roll, pitch;
         public float face_quality, face_luminance, eye_dist;
 
@@ -26,6 +27,7 @@ namespace FaceSDK
         public ResultBox(int n)
         {
             x1 = x2 = y1 = y2 = 0;
+            liveness = 0;
             yaw = roll = pitch = 0;
             face_quality = face_luminance = eye_dist = 0;
             left_eye_closed = right_eye_closed = face_occlusion = mouth_opened = 0;
@@ -58,6 +60,24 @@ namespace FaceSDK
             catch (Exception e)
             {
                 return e.ToString();
+            }
+        }
+
+        [DllImport("FacepluginSDK.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Faceplugin_activate(IntPtr license);
+
+        public int Activate(String license)
+        {
+            IntPtr ptr = Marshal.StringToHGlobalAnsi(license);
+
+            try
+            {
+                return Faceplugin_activate(ptr);
+            }
+            finally
+            {
+                // Free the unmanaged memory when done
+                Marshal.FreeHGlobal(ptr);
             }
         }
 
