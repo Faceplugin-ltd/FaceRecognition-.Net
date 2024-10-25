@@ -7,48 +7,85 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <Image
-                x:Name="ImageCaption"
-                Source="test.jpg"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+            <HorizontalStackLayout>
+                <Image
+                    x:Name="ImageCaption"
+                    Source="faceplugin.png"
+                    HeightRequest="150"
+                    Aspect="AspectFit"
+                    SemanticProperties.Description="dot net bot in a race car number eight" />
 
-            <Label
-                Text="Faceplugin Ltd"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+                <Label
+                    Text="Face Recognition Demo"
+                    Style="{StaticResource Headline}"
+                    SemanticProperties.HeadingLevel="Level1" 
+                    VerticalOptions="Center" 
+                    Padding="0,20,0,0"/>
 
-            <Label
-                Text="Welcome to the .NET Face Recognition Application"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+            </HorizontalStackLayout>
 
             <HorizontalStackLayout>
-                
+
                 <Button
                     x:Name="GetMachineCodeBtn"
                     Text="Get HWID" 
                     SemanticProperties.Hint="Counts the number of times you click"
                     Clicked="OnGetMachineCode"
-                    HorizontalOptions="Fill" />
+                    HorizontalOptions="Fill"/>
 
                 <Entry
                     x:Name="MachineCodeLabel"
                     Text=""
-                    MaxLength="20"
-                    Style="{StaticResource SubHeadline}"/>
+                    Placeholder="Get your machine code"
+                    MaxLength="100"
+                    Style="{StaticResource SubHeadline}"
+                    Margin="20,0,0,0"/>
 
             </HorizontalStackLayout>
 
+            <HorizontalStackLayout>
+
+                <Button
+                    x:Name="ActivateBtn"
+                    Text="Activate" 
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="OnGetMachineCode"
+                    HorizontalOptions="Fill" />
+
+                <Entry
+                    x:Name="LicenseLabel"
+                    Text=""
+                    MaxLength="100"
+                    Placeholder="Enter your license text"
+                    Style="{StaticResource SubHeadline}"
+                    Margin="20,0,0,0"/>
+
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Button
+                    x:Name="CounterBtn"
+                    Text="Open Image" 
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="OnCounterClicked"
+                    VerticalOptions="Start" 
+                    Margin="0,0,20,0"/>
+
+                <Image
+                    x:Name="FaceImage"
+                    Source="avatar.png"
+                    HeightRequest="250"
+                    Aspect="AspectFit"
+                    SemanticProperties.Description="dot net bot in a race car number eight" />
+
+                <Editor 
+                    x:Name="editor"
+                    Placeholder="Result text"
+                    HeightRequest="250" 
+                    Margin="20,0,0,0"/>
+
+            </HorizontalStackLayout>
+            
         </VerticalStackLayout>
     </ScrollView>
 
