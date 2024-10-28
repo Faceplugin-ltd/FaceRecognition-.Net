@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace FaceSDK
 {
+    enum SDK_STATUS
+    {
+        SDK_SUCCESS = 0,
+        SDK_LICENSE_KEY_ERROR = -1,
+        SDK_LICENSE_APPID_ERROR = -2,
+        SDK_LICENSE_EXPIRED = -3,
+        SDK_NO_ACTIVATED = -4,
+        SDK_INIT_ERROR = -5,
+    };
+
     [StructLayout(LayoutKind.Sequential)]
     public struct ResultBox
     {
@@ -112,6 +122,39 @@ namespace FaceSDK
             finally
             {
                 Marshal.FreeHGlobal(imgPtr);
+            }
+        }
+
+        [DllImport("FacepluginSDK.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Faceplugin_compare(
+            IntPtr rgbData1, // Pointer to the RGB data
+            int width1,      // Width of the image
+            int height1,     // Height of the image
+            int stride1,     // Stride of the image
+            IntPtr rgbData2, // Pointer to the RGB data
+            int width2,      // Width of the image
+            int height2,     // Height of the image
+            int stride2,     // Stride of the image
+            [In, Out] float[] similarity // Array of ResultBox
+        );
+
+        public int Compare(byte[] rgbData1, int width1, int height1, int stride1, byte[] rgbData2, int width2, int height2, int stride2, [In, Out] float[] similarity)
+        {
+            IntPtr imgPtr1 = Marshal.AllocHGlobal(rgbData1.Length);
+            Marshal.Copy(rgbData1, 0, imgPtr1, rgbData1.Length);
+
+            IntPtr imgPtr2 = Marshal.AllocHGlobal(rgbData2.Length);
+            Marshal.Copy(rgbData2, 0, imgPtr2, rgbData2.Length);
+
+            try
+            {
+                int ret = Faceplugin_compare(imgPtr1, width1, height1, stride1, imgPtr2, width2, height2, stride2, similarity);
+                return ret;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(imgPtr1);
+                Marshal.FreeHGlobal(imgPtr2);
             }
         }
 

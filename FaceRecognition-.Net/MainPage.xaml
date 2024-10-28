@@ -86,7 +86,63 @@
                     Margin="20,0,0,0"/>
 
             </HorizontalStackLayout>
-            
+
+            <HorizontalStackLayout>
+                <VerticalStackLayout>
+
+                    <Image
+                        x:Name="FaceImage1"
+                        Source="avatar.png"
+                        HeightRequest="250"
+                        Aspect="AspectFit"
+                        SemanticProperties.Description="default avatar image" />
+
+                    <Button
+                        x:Name="CounterBtn1"
+                        Text="Open Image" 
+                        SemanticProperties.Hint="Recognize face from image"
+                        Clicked="OnSelectFace1Btn"
+                        VerticalOptions="Start"
+                        Margin="0,0,20,0"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+
+                    <Image
+                        x:Name="FaceImage2"
+                        Source="avatar.png"
+                        HeightRequest="250"
+                        Aspect="AspectFit"
+                        SemanticProperties.Description="default avatar image" />
+
+                    <Button
+                        x:Name="CounterBtn2"
+                        Text="Open Image" 
+                        SemanticProperties.Hint="Recognize face from image"
+                        Clicked="OnSelectFace2Btn"
+                        VerticalOptions="Start"
+                        Margin="0,0,20,0"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <Button
+                        x:Name="CounterBtn3"
+                        Text="Compare Face" 
+                        SemanticProperties.Hint="Recognize face from image"
+                        Clicked="OnCompareBtn"
+                        VerticalOptions="Start"
+                        Margin="0,0,20,0"/>
+                    
+                    <Editor 
+                        x:Name="ResultEditor1"
+                        Placeholder="Result text"
+                        HeightRequest="250"
+                        WidthRequest="500"
+                        Margin="20,0,0,0"/>
+                </VerticalStackLayout>
+                
+            </HorizontalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 
