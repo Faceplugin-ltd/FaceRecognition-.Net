@@ -111,6 +111,10 @@ namespace FaceRecognition_.Net
                 resultString += "x2: " + resultBoxes[i].x2.ToString() + ",\n";
                 resultString += "y2: " + resultBoxes[i].y2.ToString() + ",\n";
                 resultString += "livenessConfidence: " + resultBoxes[i].liveness.ToString() + ",\n";
+
+                // Pseudo Code for feature extraction
+                float[] feature = new float[128];
+                faceSDK.Extract(pixels, imgBmp.Width, imgBmp.Height, bitmapData.Stride, resultBoxes[i], feature);
             }
 
             resultString += "}\n";

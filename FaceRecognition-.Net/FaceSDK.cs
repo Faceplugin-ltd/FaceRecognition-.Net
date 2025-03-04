@@ -158,5 +158,50 @@ namespace FaceSDK
             }
         }
 
+        [DllImport("FacepluginSDK.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Faceplugin_extract(
+            IntPtr rgbData, // Pointer to the RGB data
+            int width,      // Width of the image
+            int height,     // Height of the image
+            int stride,     // Stride of the image
+            ResultBox faceBox, // Pointer to the RGB data
+            [Out] float[] feature // Array of ResultBox
+        );
+
+        public int Extract(byte[] rgbData, int width, int height, int stride, ResultBox faceBox, float[] feature)
+        {
+            IntPtr imgPtr1 = Marshal.AllocHGlobal(rgbData.Length);
+            Marshal.Copy(rgbData, 0, imgPtr1, rgbData.Length);
+
+            try
+            {
+                int ret = Faceplugin_extract(imgPtr1, width, height, stride, faceBox, feature);
+                return ret;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(imgPtr1);
+            }
+        }
+
+        [DllImport("FacepluginSDK.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern float Faceplugin_similarity(
+            [In] float[] feature1,
+            [In] float[] feature2
+        );
+
+        public float Similarity(float[] feature1, float[] feature2)
+        {
+
+            try
+            {
+                float sim = Faceplugin_similarity(feature1, feature2);
+                return sim;
+            }
+            finally
+            {
+            }
+        }
+
     }
 }
