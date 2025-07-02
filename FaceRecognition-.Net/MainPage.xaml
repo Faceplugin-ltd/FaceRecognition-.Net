@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              x:Class="FaceRecognition_.Net.MainPage">
 
     <ScrollView>
@@ -28,7 +29,7 @@
 
                 <Button
                     x:Name="GetMachineCodeBtn"
-                    Text="Get HWID" 
+                    Text="HWID" 
                     SemanticProperties.Hint="Counts the number of times you click"
                     Clicked="OnGetMachineCode"
                     HorizontalOptions="Fill"/>
@@ -41,16 +42,13 @@
                     Style="{StaticResource SubHeadline}"
                     Margin="20,0,0,0"/>
 
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout>
-
                 <Button
                     x:Name="ActivateBtn"
                     Text="Activate" 
                     SemanticProperties.Hint="Counts the number of times you click"
                     Clicked="OnActivate"
-                    HorizontalOptions="Fill" />
+                    HorizontalOptions="Fill" 
+                    Margin="20,0,0,0"/>
 
                 <Entry
                     x:Name="LicenseLabel"
@@ -62,87 +60,98 @@
 
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout>
-                <Button
-                    x:Name="CounterBtn"
-                    Text="Open Image" 
-                    SemanticProperties.Hint="Recognize face from image"
-                    Clicked="OnRecognizeFaceBtn"
-                    VerticalOptions="Start"
-                    Margin="0,0,20,0"/>
+            <tabView:SfTabView x:Name="tabView" IndicatorPlacement="Fill" IndicatorBackground="LightBlue">
+                <tabView:SfTabView.Items>
+                    <tabView:SfTabItem Header="Face Liveness Detection">
+                        <HorizontalStackLayout>
+                            <Button
+                                x:Name="CounterBtn"
+                                Text="Open Image" 
+                                SemanticProperties.Hint="Recognize face from image"
+                                Clicked="OnRecognizeFaceBtn"
+                                VerticalOptions="Start"
+                                Margin="0,0,20,0"/>
 
-                <Image
-                    x:Name="FaceImage"
-                    Source="avatar.png"
-                    HeightRequest="250"
-                    Aspect="AspectFit"
-                    SemanticProperties.Description="default avatar image" />
+                            <Image
+                                x:Name="FaceImage"
+                                Source="avatar.png"
+                                HeightRequest="250"
+                                Aspect="AspectFit"
+                                SemanticProperties.Description="default avatar image" />
 
-                <Editor 
-                    x:Name="ResultEditor"
-                    Placeholder="Result text"
-                    HeightRequest="250"
-                    WidthRequest="500"
-                    Margin="20,0,0,0"/>
+                            <Editor 
+                                x:Name="ResultEditor"
+                                Placeholder="Result text"
+                                HeightRequest="250"
+                                WidthRequest="500"
+                                Margin="20,0,0,0"/>
 
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout>
-                <VerticalStackLayout>
-
-                    <Image
-                        x:Name="FaceImage1"
-                        Source="avatar.png"
-                        HeightRequest="250"
-                        Aspect="AspectFit"
-                        SemanticProperties.Description="default avatar image" />
-
-                    <Button
-                        x:Name="CounterBtn1"
-                        Text="Open Image" 
-                        SemanticProperties.Hint="Recognize face from image"
-                        Clicked="OnSelectFace1Btn"
-                        VerticalOptions="Start"
-                        Margin="0,0,20,0"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-
-                    <Image
-                        x:Name="FaceImage2"
-                        Source="avatar.png"
-                        HeightRequest="250"
-                        Aspect="AspectFit"
-                        SemanticProperties.Description="default avatar image" />
-
-                    <Button
-                        x:Name="CounterBtn2"
-                        Text="Open Image" 
-                        SemanticProperties.Hint="Recognize face from image"
-                        Clicked="OnSelectFace2Btn"
-                        VerticalOptions="Start"
-                        Margin="0,0,20,0"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <Button
-                        x:Name="CounterBtn3"
-                        Text="Compare Face" 
-                        SemanticProperties.Hint="Recognize face from image"
-                        Clicked="OnCompareBtn"
-                        VerticalOptions="Start"
-                        Margin="0,0,20,0"/>
+                        </HorizontalStackLayout>
+                    </tabView:SfTabItem>
                     
-                    <Editor 
-                        x:Name="ResultEditor1"
-                        Placeholder="Result text"
-                        HeightRequest="250"
-                        WidthRequest="500"
-                        Margin="20,0,0,0"/>
-                </VerticalStackLayout>
-                
-            </HorizontalStackLayout>
+                    <tabView:SfTabItem Header="Face Recognition">
+                        <HorizontalStackLayout>
+                            <VerticalStackLayout>
 
+                                <Image
+                                    x:Name="FaceImage1"
+                                    Source="avatar.png"
+                                    HeightRequest="250"
+                                    Aspect="AspectFit"
+                                    SemanticProperties.Description="default avatar image" />
+
+                                <Button
+                                    x:Name="CounterBtn1"
+                                    Text="Open Image" 
+                                    SemanticProperties.Hint="Recognize face from image"
+                                    Clicked="OnSelectFace1Btn"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,20,0"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout>
+
+                                <Image
+                                    x:Name="FaceImage2"
+                                    Source="avatar.png"
+                                    HeightRequest="250"
+                                    Aspect="AspectFit"
+                                    SemanticProperties.Description="default avatar image" />
+
+                                <Button
+                                    x:Name="CounterBtn2"
+                                    Text="Open Image" 
+                                    SemanticProperties.Hint="Recognize face from image"
+                                    Clicked="OnSelectFace2Btn"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,20,0"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout>
+                                <Button
+                                    x:Name="CounterBtn3"
+                                    Text="Compare Face" 
+                                    SemanticProperties.Hint="Recognize face from image"
+                                    Clicked="OnCompareBtn"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,20,0"/>
+                    
+                                <Editor 
+                                    x:Name="ResultEditor1"
+                                    Placeholder="Result text"
+                                    HeightRequest="250"
+                                    WidthRequest="500"
+                                    Margin="20,0,0,0"/>
+                            </VerticalStackLayout>
+                
+                        </HorizontalStackLayout>
+                    </tabView:SfTabItem>
+
+                    <tabView:SfTabItem Header="Live Camera Capture">
+                    </tabView:SfTabItem>
+                </tabView:SfTabView.Items>
+            </tabView:SfTabView>
+            
         </VerticalStackLayout>
     </ScrollView>
 

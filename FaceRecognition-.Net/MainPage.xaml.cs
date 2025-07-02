@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Diagnostics;
 
 namespace FaceRecognition_.Net
 {
@@ -25,13 +26,13 @@ namespace FaceRecognition_.Net
 
             var dictPath = $"{AppDomain.CurrentDomain.BaseDirectory}assets";
             int ret = faceSDK.Init(dictPath);
-            if (ret != (int)SDK_STATUS.SDK_SUCCESS) {
-                DisplayAlert("check", "Failed to init SDK", "ok");
-            }
 
-            // *** call async function from sync function
-            // Task task = Task.Run(async () => await LoadMauiAsset());
-            // var fullPath = System.IO.Path.Combine(FileSystem.AppDataDirectory,"MyFolder","myfile.txt");
+            if (ret != (int)SDK_STATUS.SDK_SUCCESS)
+                Trace.WriteLine($"Failed to init SDK: {ret}");
+            else
+                Trace.WriteLine($"Successfully inited SDK");
+
+            MachineCodeLabel.Text = faceSDK.GetHardwareId();
 
         }
 
@@ -113,8 +114,8 @@ namespace FaceRecognition_.Net
                 resultString += "livenessConfidence: " + resultBoxes[i].liveness.ToString() + ",\n";
 
                 // Pseudo Code for feature extraction
-                float[] feature = new float[128];
-                faceSDK.Extract(pixels, imgBmp.Width, imgBmp.Height, bitmapData.Stride, resultBoxes[i], feature);
+                //float[] feature = new float[128];
+                //faceSDK.Extract(pixels, imgBmp.Width, imgBmp.Height, bitmapData.Stride, resultBoxes[i], feature);
             }
 
             resultString += "}\n";
